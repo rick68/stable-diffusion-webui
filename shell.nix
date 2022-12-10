@@ -13,6 +13,8 @@ let
     torch
     torchvision
     numba
+    keras
+    tensorflow
   ]);
 
 in
@@ -21,12 +23,12 @@ pkgs.mkShell rec {
     python3
     pythonEnv
     autoPatchelfHook
-    gcc-unwrapped.lib
     git
     gcc-unwrapped.lib
     zlib
     libGL.out
     glib.out
+    libtensorflow
   ] ++ (with xorg; [
     libSM
     libICE
