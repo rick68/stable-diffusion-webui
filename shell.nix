@@ -6,6 +6,7 @@
       MPISupport = true;
     };
   }
+, lib ? pkgs.lib
 }:
 
 let
@@ -26,13 +27,15 @@ pkgs.mkShell rec {
     git
     gcc-unwrapped.lib
     zlib
-    libGL.out
-    glib.out
     libtensorflow
   ] ++ (with xorg; [
     libSM
     libICE
   ]);
+
   shellHook = ''
+    export LD_PRELOAD=$LD_PRELOAD''${LD_PRELOAD:+' '}'${pkgs.gperftools}/lib/libtcmalloc.so'
+    export LD_PRELOAD=$LD_PRELOAD''${LD_PRELOAD:+' '}'${pkgs.libGL.out}/lib/libGL.so'
+    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH''${LD_LIBRARY_PATH:+':'}'${lib.makeLibraryPath (with pkgs; [ glib.out ])}'
   '';
 }
